@@ -1,0 +1,226 @@
+/* ============================================================
+   Daily Work Report System — Global Styles
+   Design system tokens, base resets, and utility classes.
+   ============================================================ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base resets ─────────────────────────────────────────── */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    @apply bg-surface-900 text-slate-100 font-sans antialiased;
+    min-height: 100vh;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-surface-800;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-600 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-slate-500;
+  }
+
+  /* Focus styles */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-surface-900;
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-primary-600 text-white;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold leading-tight tracking-tight;
+  }
+}
+
+/* ── Reusable component classes ─────────────────────────── */
+@layer components {
+  /* Cards */
+  .card {
+    @apply bg-surface-800 border border-slate-700/50 rounded-xl shadow-card;
+  }
+  .card-hover {
+    @apply card transition-all duration-200 hover:border-primary-500/30 hover:shadow-card-hover;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium
+           text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2
+           focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-900
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn bg-primary-600 text-white hover:bg-primary-500 active:bg-primary-700;
+  }
+  .btn-secondary {
+    @apply btn bg-slate-700 text-slate-100 hover:bg-slate-600 active:bg-slate-800 border border-slate-600;
+  }
+  .btn-danger {
+    @apply btn bg-red-600/20 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white;
+  }
+  .btn-ghost {
+    @apply btn bg-transparent text-slate-400 hover:bg-slate-800 hover:text-slate-100;
+  }
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+  .btn-lg {
+    @apply px-6 py-3 text-base;
+  }
+
+  /* Form fields */
+  .form-input {
+    @apply w-full bg-surface-800 border border-slate-700 rounded-lg px-4 py-2.5 text-sm
+           text-slate-100 placeholder-slate-500
+           focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500
+           transition-colors duration-200;
+  }
+  .form-label {
+    @apply block text-sm font-medium text-slate-300 mb-1.5;
+  }
+  .form-error {
+    @apply text-xs text-red-400 mt-1;
+  }
+  .form-group {
+    @apply flex flex-col gap-1;
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  .badge-success {
+    @apply badge bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-500/30;
+  }
+  .badge-warning {
+    @apply badge bg-amber-500/15 text-amber-400 ring-1 ring-amber-500/30;
+  }
+  .badge-error {
+    @apply badge bg-red-500/15 text-red-400 ring-1 ring-red-500/30;
+  }
+  .badge-info {
+    @apply badge bg-sky-500/15 text-sky-400 ring-1 ring-sky-500/30;
+  }
+  .badge-neutral {
+    @apply badge bg-slate-500/15 text-slate-400 ring-1 ring-slate-500/30;
+  }
+
+  /* Stat cards */
+  .stat-card {
+    @apply card p-5 flex flex-col gap-3;
+  }
+
+  /* Table */
+  .table-container {
+    @apply w-full overflow-x-auto rounded-xl border border-slate-700/50;
+  }
+  .table {
+    @apply w-full text-sm text-left;
+  }
+  .table thead {
+    @apply bg-surface-800 text-slate-400 uppercase text-xs tracking-wider;
+  }
+  .table thead th {
+    @apply px-4 py-3 font-medium;
+  }
+  .table tbody tr {
+    @apply border-t border-slate-700/50 transition-colors hover:bg-slate-800/50;
+  }
+  .table tbody td {
+    @apply px-4 py-3 text-slate-200;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-400 to-purple-400 bg-clip-text text-transparent;
+  }
+
+  /* Glass effect */
+  .glass {
+    @apply bg-white/5 backdrop-blur-md border border-white/10;
+  }
+
+  /* Divider */
+  .divider {
+    @apply border-t border-slate-700/50 my-4;
+  }
+
+  /* Skeleton loading */
+  .skeleton {
+    @apply bg-slate-700 animate-pulse rounded;
+  }
+
+  /* Page wrapper */
+  .page-container {
+    @apply p-6 max-w-7xl mx-auto animate-fade-in;
+  }
+  .page-header {
+    @apply mb-6;
+  }
+  .page-title {
+    @apply text-2xl font-bold text-slate-100;
+  }
+  .page-subtitle {
+    @apply text-sm text-slate-400 mt-1;
+  }
+}
+
+/* ── Utility overrides ───────────────────────────────────── */
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(99,102,241,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(99,102,241,0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ── React-Toastify dark theme overrides ─────────────────── */
+.Toastify__toast {
+  @apply bg-surface-800 text-slate-100 border border-slate-700 rounded-lg text-sm;
+}
+.Toastify__toast--success .Toastify__toast-icon svg { fill: #10b981; }
+.Toastify__toast--error   .Toastify__toast-icon svg { fill: #ef4444; }
+.Toastify__toast--warning .Toastify__toast-icon svg { fill: #f59e0b; }
+.Toastify__progress-bar--success { background: #10b981; }
+.Toastify__progress-bar--error   { background: #ef4444; }
+.Toastify__progress-bar--warning { background: #f59e0b; }
+.Toastify__close-button { @apply text-slate-400; }
