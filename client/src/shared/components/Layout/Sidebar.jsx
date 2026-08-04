@@ -6,26 +6,26 @@ import { logoutThunk } from '../../../features/auth/authSlice'
 import { ROLES } from '../../utils/constants'
 
 const EMPLOYEE_NAV = [
-  { to: '/employee/dashboard', label: 'Dashboard',    icon: HomeIcon },
-  { to: '/employee/report',    label: 'Submit Report', icon: PlusIcon },
-  { to: '/employee/reports',   label: 'My Reports',   icon: ListIcon },
-  { to: '/employee/profile',   label: 'Profile',      icon: UserIcon },
+  { to: '/employee/dashboard', label: 'Dashboard', icon: HomeIcon },
+  { to: '/employee/report', label: 'Submit Report', icon: PlusIcon },
+  { to: '/employee/reports', label: 'My Reports', icon: ListIcon },
+  { to: '/employee/profile', label: 'Profile', icon: UserIcon },
 ]
 
 const MANAGER_NAV = [
-  { to: '/manager/dashboard',  label: 'Dashboard',    icon: HomeIcon },
-  { to: '/manager/employees',  label: 'Employees',    icon: UsersIcon },
-  { to: '/manager/reports',    label: 'All Reports',  icon: ListIcon },
-  { to: '/manager/weekly',     label: 'Weekly',       icon: CalendarIcon },
-  { to: '/manager/monthly',    label: 'Monthly',      icon: ChartIcon },
-  { to: '/manager/analytics',  label: 'Analytics',    icon: ChartBarIcon },
+  { to: '/manager/dashboard', label: 'Dashboard', icon: HomeIcon },
+  { to: '/manager/employees', label: 'Employees', icon: UsersIcon },
+  { to: '/manager/reports', label: 'All Reports', icon: ListIcon },
+  { to: '/manager/weekly', label: 'Weekly', icon: CalendarIcon },
+  { to: '/manager/monthly', label: 'Monthly', icon: ChartIcon },
+  { to: '/manager/analytics', label: 'Analytics', icon: ChartBarIcon },
 ]
 
 export default function Sidebar({ isOpen, onToggle }) {
   const { user, isManager } = useAuth()
-  const dispatch  = useDispatch()
-  const navigate  = useNavigate()
-  const navItems  = isManager ? MANAGER_NAV : EMPLOYEE_NAV
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const navItems = isManager ? MANAGER_NAV : EMPLOYEE_NAV
 
   const handleLogout = async () => {
     await dispatch(logoutThunk())
@@ -38,19 +38,22 @@ export default function Sidebar({ isOpen, onToggle }) {
       {/* Mobile overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-20 bg-black/50 lg:hidden"
+          className="fixed inset-0 z-30 bg-black/50 lg:hidden"
           onClick={onToggle}
         />
       )}
 
       <aside
         className={`
-          fixed top-0 left-0 h-full z-30
-          bg-surface-800 border-r border-slate-700/50
-          flex flex-col
-          transition-all duration-300 ease-in-out
-          ${isOpen ? 'w-64' : 'w-16'}
-        `}
+fixed top-0 left-0 h-screen
+bg-surface-800 border-r border-slate-700/50
+flex flex-col
+transition-all duration-300 ease-in-out
+z-40
+${isOpen
+            ? 'translate-x-0 w-64'
+            : '-translate-x-full lg:translate-x-0 lg:w-16'}
+`}
       >
         {/* Logo */}
         <div className="flex items-center gap-3 px-4 py-5 border-b border-slate-700/50 h-16 flex-shrink-0">
@@ -60,7 +63,7 @@ export default function Sidebar({ isOpen, onToggle }) {
             </svg>
           </div>
           {isOpen && (
-            <span className="font-bold text-white text-sm whitespace-nowrap overflow-hidden">
+            <span className="hidden lg:block font-bold text-white text-sm truncate">
               Work Report
             </span>
           )}
@@ -81,13 +84,18 @@ export default function Sidebar({ isOpen, onToggle }) {
             <NavLink
               key={to}
               to={to}
+              onClick={() => {
+                if (window.innerWidth < 1024) {
+                  onToggle()
+                }
+              }}
               className={({ isActive }) =>
                 `flex items-center gap-3 mx-2 px-3 py-2.5 rounded-lg mb-0.5 text-sm font-medium
                  transition-all duration-150 group
                  ${isActive
-                   ? 'bg-primary-600/20 text-primary-400 border border-primary-500/20'
-                   : 'text-slate-400 hover:bg-slate-700/50 hover:text-slate-200'
-                 }`
+                  ? 'bg-primary-600/20 text-primary-400 border border-primary-500/20'
+                  : 'text-slate-400 hover:bg-slate-700/50 hover:text-slate-200'
+                }`
               }
               title={!isOpen ? label : undefined}
             >
@@ -119,7 +127,11 @@ export default function Sidebar({ isOpen, onToggle }) {
             <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
-            {isOpen && <span>Logout</span>}
+            {isOpen && (
+              <span className="hidden lg:block">
+                Logout
+              </span>
+            )}
           </button>
         </div>
       </aside>

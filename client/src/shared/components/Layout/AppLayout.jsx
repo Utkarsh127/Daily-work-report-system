@@ -1,28 +1,41 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import Navbar from './Navbar'
 
-/**
- * AppLayout — the main shell used by both Employee and Manager dashboards.
- * Renders: collapsible Sidebar (left) + Navbar (top) + <Outlet /> (content area)
- */
 export default function AppLayout() {
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 1024)
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSidebarOpen(true)
+      } else {
+        setSidebarOpen(false)
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   return (
-    <div className="min-h-screen bg-surface-900 flex">
-      {/* Sidebar */}
-      <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen((v) => !v)} />
+    <div className="min-h-screen bg-surface-900 flex overflow-hidden">
+      <Sidebar
+        isOpen={sidebarOpen}
+        onToggle={() => setSidebarOpen((v) => !v)}
+      />
 
-      {/* Main area */}
       <div
-        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${
-          sidebarOpen ? 'lg:ml-64' : 'lg:ml-16'
-        }`}
+        className={`flex flex-1 flex-col min-w-0 transition-all duration-300 ${sidebarOpen ? 'lg:ml-64' : 'lg:ml-16'
+          }`}
       >
-        <Navbar onMenuToggle={() => setSidebarOpen((v) => !v)} />
-        <main className="flex-1 overflow-auto">
+        <Navbar
+          onMenuToggle={() => setSidebarOpen((v) => !v)}
+        />
+
+        <main className="flex-1 overflow-x-hidden overflow-y-auto">
           <Outlet />
         </main>
       </div>
