@@ -22,24 +22,34 @@ app.use(
 // ──────────────────────────────────────────────────────────
 // CORS
 // ──────────────────────────────────────────────────────────
+
+const allowedOrigins = [
+  'https://daily-work-report-system.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:3000',
+];
+
+if (process.env.CLIENT_URL) {
+  allowedOrigins.push(process.env.CLIENT_URL.replace(/\/$/, ''));
+}
+
 const corsOptions = {
   origin: (origin, callback) => {
-    const allowedOrigins = [
-      process.env.CLIENT_URL || 'http://localhost:5173',
-      'http://localhost:3000',
-    ];
-    // Allow requests with no origin (e.g. Postman, curl, Swagger UI)
     if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`CORS: Origin '${origin}' not allowed`));
+      return callback(null, true);
     }
+
+    console.error(`CORS blocked origin: ${origin}`);
+    return callback(new Error(`CORS: Origin '${origin}' not allowed`));
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
+
 app.use(cors(corsOptions));
+
+
 
 // ──────────────────────────────────────────────────────────
 // Request logging (skip in test)
